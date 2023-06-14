@@ -23,6 +23,7 @@ public class MusicUtil {
     private static final String fly = "fly.wav";
     private static final String crash = "crash.wav";
     private static final String score = "score.wav";
+    private static final String bestScore = "bestscore.wav";
     
     public static void play(String path) throws LineUnavailableException {
         Clip clip = AudioSystem.getClip();
@@ -52,5 +53,9 @@ public class MusicUtil {
 
     public static void playScore() throws LineUnavailableException {
         play(score);
+    }
+    
+    public static void playBestScore() throws LineUnavailableException {
+        play(bestScore);
     }
 }

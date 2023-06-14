@@ -15,7 +15,7 @@ public class Constant {
 
 	public static final String GAME_TITLE = "Flappy Bird Extreme Edition";
 
-	public static final int FRAME_X = 600;
+	public static final int FRAME_X = 500;
 	public static final int FRAME_Y = 100;
 
 	public static final String BG_IMG_PATH = "resources/img/background.png";
@@ -45,7 +45,7 @@ public class Constant {
 
 	public static final String SCORE_FILE_PATH = "resources/score";
 
-	public static final int GAME_SPEED = 4;
+	public static final int GAME_SPEED = 8;
 
 	public static final Color BG_COLOR = new Color(0x4bc4cf);
 
@@ -57,9 +57,9 @@ public class Constant {
 
 	public static final int TOP_PIPE_LENGTHENING = 100;
 
-	public static final int CLOUD_BORN_PERCENT = 6;
+	public static final int CLOUD_BORN_PERCENT = 9;
 	public static final int CLOUD_IMAGE_COUNT = 2;
-	public static final int MAX_CLOUD_COUNT = 7;
+	public static final int MAX_CLOUD_COUNT = 10;
 
 	public static final Font CURRENT_SCORE_FONT = new Font("Arial", Font.BOLD, 32);
 	public static final Font SCORE_FONT = new Font("Arial", Font.BOLD, 24);

@@ -9,6 +9,7 @@ import com.game.flappybird.app.Game;
 import com.game.flappybird.util.Constant;
 import com.game.flappybird.util.GameUtil;
 import com.game.flappybird.util.MusicUtil;
+import java.io.IOException;
 import javax.sound.sampled.LineUnavailableException;
 
 public class Bird {
@@ -149,7 +150,7 @@ public class Bird {
         g.drawString(str, x, Constant.FRAME_HEIGHT / 10);
     }
 
-    public void reset() {
+    public void reset() throws IOException {
         state = BIRD_NORMAL;
         y = Constant.FRAME_HEIGHT >> 1;
         velocity = 0;

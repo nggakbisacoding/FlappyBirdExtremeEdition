@@ -17,6 +17,7 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.LineUnavailableException;
@@ -83,13 +84,17 @@ public class Game extends Frame {
                 }
                 case STATE_OVER -> {
                     if (keycode == KeyEvent.VK_SPACE) {
-                        resetGame();
+                        try {
+                            resetGame();
+                        } catch (IOException ex) {
+                            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
             }
         }
 
-        private void resetGame() {
+        private void resetGame() throws IOException {
             setGameState(GAME_READY);
             gameElement.reset();
             bird.reset();

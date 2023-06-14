@@ -10,6 +10,7 @@ public class WelcomeAnimation {
 
 	private final BufferedImage titleImg;
 	private final BufferedImage noticeImg;
+        private String difficulty;
 
 	private int flashCount = 0;
 
@@ -22,6 +23,16 @@ public class WelcomeAnimation {
 		int x = (Constant.FRAME_WIDTH - titleImg.getWidth()) >> 1;
 		int y = Constant.FRAME_HEIGHT / 3;
 		g.drawImage(titleImg, x, y, null);
+                
+                if(Constant.GAME_SPEED <= 5) {
+                    this.difficulty = "Easy";
+                } else if(Constant.GAME_SPEED <= 10 && Constant.GAME_SPEED > 5) {
+                    this.difficulty = "Medium";
+                } else {
+                    this.difficulty = "Asian Mode";
+                }
+                
+                g.drawString(difficulty, x, y+20);
 
 		final int CYCLE = 30;
 		if (flashCount++ > CYCLE)

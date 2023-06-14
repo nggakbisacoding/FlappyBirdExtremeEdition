@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 
 import com.game.flappybird.util.Constant;
 import com.game.flappybird.util.MusicUtil;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.sound.sampled.LineUnavailableException;
 
@@ -58,6 +59,8 @@ public class ScoreCounter {
 		if (!bird.isDead()) {
 			MusicUtil.playScore();
 			score += 1;
+                        if (score > getBestScore())
+                            MusicUtil.playBestScore();
 		}
 	}
 
@@ -69,7 +72,7 @@ public class ScoreCounter {
 		return score;
 	}
 
-	public void reset() {
+	public void reset() throws FileNotFoundException, IOException {
 		score = 0;
 	}
 
