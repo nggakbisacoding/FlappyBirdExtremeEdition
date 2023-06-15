@@ -31,6 +31,7 @@ public class GameElementLayer {
         }
         isCollideBird(bird);
         pipeBornLogic(bird);
+        spawnItem(bird);
     }
 
     public static final int VERTICAL_INTERVAL = Constant.FRAME_HEIGHT / 5;
@@ -168,6 +169,13 @@ public class GameElementLayer {
                 bird.deadBirdFall();
                 return;
             }
+        }
+    }
+
+    public void spawnItem(Bird bird) throws LineUnavailableException, IOException {
+        Item item = null; 
+        if (item != null) {
+            items.add(item);
         }
     }
 

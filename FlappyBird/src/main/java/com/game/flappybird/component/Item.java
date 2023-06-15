@@ -1,23 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.game.flappybird.component;
 
-/**
- *
- * @author Fandead
- */
-public class Item {
-    private String name;
-    private String effect;
-    private int amount;
-    
-    public Item(String name, String effect, int amount) {
-        this.name = name;
-        this.effect = effect;
-        this.amount = amount;
-    }
+import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
 
+import com.game.flappybird.util.Constant;
+import com.game.flappybird.util.GameUtil;
+
+public class Item {
+    static BufferedImage[] imgs;
+    int speed;
+    int width, height;
     
+    private static final int ITEM_WIDTH = imgs[0].getWidth();
+
+    Rectangle itemRect;
+
+    public Item() {
+        this.speed = Constant.GAME_SPEED;
+        this.width = ITEM_WIDTH;
+
+        itemRect = new Rectangle();
+        itemRect.width = ITEM_WIDTH;
+
+        GameUtil.getRandomNumber(height, ITEM_WIDTH);
+    }
 }
