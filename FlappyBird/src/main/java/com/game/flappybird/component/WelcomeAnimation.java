@@ -24,8 +24,10 @@ public class WelcomeAnimation {
 		int y = Constant.FRAME_HEIGHT / 3;
 		g.drawImage(titleImg, x, y, null);
                 
-		difficulty = Difficulty.getDifficulty(y);
-        g.drawString(difficulty, x, y-20);
+                g.setColor(Color.white);
+                g.setFont(Constant.CURRENT_SCORE_FONT);
+		difficulty = Difficulty.getDifficulty();
+                g.drawString(difficulty, x, y);
 
 		final int CYCLE = 30;
 		if (flashCount++ > CYCLE)
