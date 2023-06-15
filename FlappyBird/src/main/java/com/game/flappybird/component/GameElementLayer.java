@@ -183,6 +183,9 @@ public class GameElementLayer {
         for (Pipe pipe : pipes) {
             PipePool.giveBack(pipe);
         }
+        for (Item item : items) {
+            ItemPool.giveBack(item);
+        }
         pipes.clear();
     }
 }
