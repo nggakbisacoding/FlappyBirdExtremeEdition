@@ -4,6 +4,7 @@ import com.game.flappybird.util.Constant;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Cloud {
 
@@ -27,7 +28,7 @@ public class Cloud {
         scaleImageHeight = (int) (scale * img.getWidth());
     }
 
-    public void draw(Graphics g, Bird bird) {
+    public void draw(Graphics g, Bird bird) throws IOException {
         int speed = this.speed;
         if (bird.isDead())
             speed = 1;

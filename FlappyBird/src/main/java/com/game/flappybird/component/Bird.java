@@ -19,8 +19,10 @@ public class Bird {
     private final int x;
     private int y;
     private int wingState;
+    private int heart = 3;
 
     private BufferedImage image;
+    private BufferedImage heartImage;
 
     private int state;
     public static final int BIRD_NORMAL = 0;
@@ -62,7 +64,7 @@ public class Bird {
                 BIRD_WIDTH - RECT_DESCALE * 4);
     }
 
-    public void draw(Graphics g) throws LineUnavailableException {
+    public void draw(Graphics g) throws LineUnavailableException, IOException {
         movement();
         int state_index = Math.min(state, BIRD_DEAD_FALL);
         int halfImgWidth = birdImages[state_index][0].getWidth() >> 1;
@@ -71,10 +73,11 @@ public class Bird {
             image = birdImages[BIRD_UP][0];
         g.drawImage(image, x - halfImgWidth, y - halfImgHeight, null); 
 
-        if (state == BIRD_DEAD)
+        if (state == BIRD_DEAD && heart <= 0)
             gameOverAnimation.draw(g, this);
         else if (state != BIRD_DEAD_FALL)
             drawScore(g);
+            drawHeart(g);
 //      g.setColor(Color.black);
 //      g.drawRect((int) birdRect.getX(), (int) birdRect.getY(), (int) birdRect.getWidth(), (int) birdRect.getHeight());
     }
@@ -85,7 +88,7 @@ public class Bird {
     private int velocity = 0; // bird's velocity along Y, default same as playerFlapped
     private final int BOTTOM_BOUNDARY = Constant.FRAME_HEIGHT - GameBackground.GROUND_HEIGHT - (BIRD_HEIGHT / 2);
 
-    private void movement() throws LineUnavailableException {
+    private void movement() throws LineUnavailableException, IOException {
         wingState++;
         image = birdImages[Math.min(state, BIRD_DEAD_FALL)][wingState / 10 % IMG_COUNT];
         if (state == BIRD_FALL || state == BIRD_DEAD_FALL) {
@@ -111,8 +114,12 @@ public class Bird {
         state = BIRD_DEAD;
         Game.setGameState(Game.STATE_OVER);
     }
+    
+    public int getHealth() {
+        return heart;
+    }
 
-    public void birdFlap() throws LineUnavailableException {
+    public void birdFlap() throws LineUnavailableException, IOException {
         if (keyIsReleased()) {
             if (isDead())
                 return;
@@ -126,7 +133,7 @@ public class Bird {
         }
     }
 
-    public void birdFall() {
+    public void birdFall() throws IOException {
         if (isDead())
             return;
         state = BIRD_FALL;
@@ -137,8 +144,19 @@ public class Bird {
         MusicUtil.playCrash();
         velocity = 0;
     }
+    
+    public void setHeart() {
+        if(Constant.GAME_SPEED <= 5)
+            heart = 2;
+        else if(Constant.GAME_SPEED <= 10 && Constant.GAME_SPEED > 5)
+            heart = 1;
+        else
+            heart = 0;
+    }
 
-    public boolean isDead() {
+    public boolean isDead() throws IOException {
+        if(heart > 0)
+            return false;
         return state == BIRD_DEAD_FALL || state == BIRD_DEAD;
     }
 
@@ -148,6 +166,13 @@ public class Bird {
         String str = Long.toString(counter.getCurrentScore());
         int x = Constant.FRAME_WIDTH - GameUtil.getStringWidth(Constant.CURRENT_SCORE_FONT, str) >> 1;
         g.drawString(str, x, Constant.FRAME_HEIGHT / 10);
+    }
+    
+    private void drawHeart(Graphics g) {
+        g.setColor(Color.red);
+        int x = Constant.FRAME_HEIGHT - 20;
+        heartImage = GameUtil.loadBufferedImage(Constant.HEART_PATH);
+        g.drawImage(heartImage, x, Constant.FRAME_WIDTH-Constant.FRAME_WIDTH+20, null);
     }
 
     public void reset() throws IOException {
@@ -159,6 +184,18 @@ public class Bird {
         birdCollisionRect.y = y - ImgHeight / 2 + RECT_DESCALE * 2;
 
         counter.reset();
+    }
+    
+    public void resetNotDead() throws IOException {
+        state = BIRD_NORMAL;
+        y = Constant.FRAME_HEIGHT >> 1;
+        velocity = 0;
+        wingState = 0;
+        
+        int ImgHeight = birdImages[state][0].getHeight();
+        birdCollisionRect.y = y - ImgHeight / 2 + RECT_DESCALE * 2;
+        
+        heart -= 1;
     }
 
     private boolean keyFlag = true; 

@@ -9,5 +9,19 @@ package com.game.flappybird.component;
  * @author Fandead
  */
 public class Item {
+    private String name;
+    private String effect;
+    private int amount;
     
+    public Item(String name, String effect, int amount) {
+        this.name = name;
+        this.effect = effect;
+        this.amount = amount;
+    }
+    
+    public void Use() {
+        if(this.name == "null") {
+            
+        }
+    }
 }

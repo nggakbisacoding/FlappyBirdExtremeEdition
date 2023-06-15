@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.game.flappybird.util.Constant;
 import com.game.flappybird.util.GameUtil;
+import java.io.IOException;
 import javax.sound.sampled.LineUnavailableException;
 
 public class GameElementLayer {
@@ -15,7 +16,7 @@ public class GameElementLayer {
         pipes = new ArrayList<>();
     }
 
-    public void draw(Graphics g, Bird bird) throws LineUnavailableException {
+    public void draw(Graphics g, Bird bird) throws LineUnavailableException, IOException {
         for (int i = 0; i < pipes.size(); i++) {
             Pipe pipe = pipes.get(i);
             if (pipe.isVisible()) {
@@ -35,7 +36,7 @@ public class GameElementLayer {
     public static final int MIN_HEIGHT = Constant.FRAME_HEIGHT >> 3;
     public static final int MAX_HEIGHT = ((Constant.FRAME_HEIGHT) >> 3) * 5;
 
-    private void pipeBornLogic(Bird bird) throws LineUnavailableException {
+    private void pipeBornLogic(Bird bird) throws LineUnavailableException, IOException {
         if (bird.isDead()) {
             return;
         }
@@ -156,7 +157,7 @@ public class GameElementLayer {
         pipes.add(bottom);
     }
 
-    public void isCollideBird(Bird bird) throws LineUnavailableException {
+    public void isCollideBird(Bird bird) throws LineUnavailableException, IOException {
         if (bird.isDead()) {
             return;
         }

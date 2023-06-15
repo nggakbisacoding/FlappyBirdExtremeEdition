@@ -4,12 +4,20 @@
  */
 package com.game.flappybird.app;
 
-/**
- *
- * @author Fandead
- */
-public class App {
+import com.game.flappybird.util.Constant;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class App extends JPanel{
     public static void main(String[] args) {
-        new Game();
+        JFrame frame = new JFrame(Constant.GAME_TITLE);
+        Game world = new Game();
+        frame.add(world);
+        frame.setSize(Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }

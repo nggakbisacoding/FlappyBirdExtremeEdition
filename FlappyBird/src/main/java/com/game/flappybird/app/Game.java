@@ -67,7 +67,7 @@ public class Game extends Frame {
                             bird.birdFlap();
                             bird.birdFall();
                             setGameState(GAME_START);
-                        } catch (LineUnavailableException ex) {
+                        } catch (LineUnavailableException | IOException ex) {
                             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
@@ -77,7 +77,7 @@ public class Game extends Frame {
                         try {
                             bird.birdFlap();
                             bird.birdFall();
-                        } catch (LineUnavailableException ex) {
+                        } catch (LineUnavailableException | IOException ex) {
                             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
@@ -85,7 +85,10 @@ public class Game extends Frame {
                 case STATE_OVER -> {
                     if (keycode == KeyEvent.VK_SPACE) {
                         try {
-                            resetGame();
+                            if(bird.getHealth() >= 0)
+                                resetNotDead();
+                            else
+                                resetGame();
                         } catch (IOException ex) {
                             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -93,11 +96,18 @@ public class Game extends Frame {
                 }
             }
         }
+        
+        private void resetNotDead() throws IOException {
+            setGameState(GAME_READY);
+            gameElement.reset();
+            bird.resetNotDead();
+        }
 
         private void resetGame() throws IOException {
             setGameState(GAME_READY);
             gameElement.reset();
             bird.reset();
+            bird.setHeart();
         }
 
         @Override
@@ -139,20 +149,28 @@ public class Game extends Frame {
     @Override
     public void update(Graphics g) {
         Graphics bufG = bufImg.getGraphics();
-        background.draw(bufG, bird);
-        foreground.draw(bufG, bird);
+        try {
+            background.draw(bufG, bird);
+        } catch (IOException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            foreground.draw(bufG, bird);
+        } catch (IOException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if (gameState == GAME_READY) {
             welcomeAnimation.draw(bufG);
         } else {
             try {
                 gameElement.draw(bufG, bird);
-            } catch (LineUnavailableException ex) {
+            } catch (LineUnavailableException | IOException ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         try {
             bird.draw(bufG);
-        } catch (LineUnavailableException ex) {
+        } catch (LineUnavailableException | IOException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
         g.drawImage(bufImg, 0, 0, null);

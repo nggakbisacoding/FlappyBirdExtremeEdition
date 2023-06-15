@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.game.flappybird.util.Constant;
 import com.game.flappybird.util.GameUtil;
+import java.io.IOException;
 
 public class GameForeground {
     private final List<Cloud> clouds;
@@ -23,7 +24,7 @@ public class GameForeground {
         time = System.currentTimeMillis();
     }
 
-    public void draw(Graphics g, Bird bird) {
+    public void draw(Graphics g, Bird bird) throws IOException {
         cloudBornLogic();
         for (Cloud cloud : clouds) {
             cloud.draw(g, bird);
@@ -35,8 +36,8 @@ public class GameForeground {
             time = System.currentTimeMillis();
             if (clouds.size() < Constant.MAX_CLOUD_COUNT) {
                 try {
-                    if (GameUtil.isInProbability(Constant.CLOUD_BORN_PERCENT, 100)) { // 根据给定的概率添加云朵
-                        int index = GameUtil.getRandomNumber(0, Constant.CLOUD_IMAGE_COUNT); // 随机选取云朵图片
+                    if (GameUtil.isInProbability(Constant.CLOUD_BORN_PERCENT, 100)) {
+                        int index = GameUtil.getRandomNumber(0, Constant.CLOUD_IMAGE_COUNT);
 
                         int x = Constant.FRAME_WIDTH;
                         int y = GameUtil.getRandomNumber(Constant.TOP_BAR_HEIGHT, Constant.FRAME_HEIGHT / 3);

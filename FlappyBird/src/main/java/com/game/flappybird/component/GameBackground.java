@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import com.game.flappybird.util.Constant;
 import com.game.flappybird.util.GameUtil;
+import java.io.IOException;
 
 public class GameBackground {
 
@@ -26,7 +27,7 @@ public class GameBackground {
 		this.layerX = 0;
 	}
 
-	public void draw(Graphics g, Bird bird) {
+	public void draw(Graphics g, Bird bird) throws IOException {
 		g.setColor(Constant.BG_COLOR);
 		g.fillRect(0, 0, Constant.FRAME_WIDTH, Constant.FRAME_HEIGHT);
 

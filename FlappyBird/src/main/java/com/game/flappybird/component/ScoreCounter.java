@@ -55,12 +55,13 @@ public class ScoreCounter {
 		}
 	}
 
-	public void score(Bird bird) throws LineUnavailableException {
+	public void score(Bird bird) throws LineUnavailableException, IOException {
 		if (!bird.isDead()) {
-			MusicUtil.playScore();
 			score += 1;
                         if (score > getBestScore())
                             MusicUtil.playBestScore();
+                        if(score < getBestScore())
+                            MusicUtil.playScore();
 		}
 	}
 

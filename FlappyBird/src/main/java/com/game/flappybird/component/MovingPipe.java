@@ -3,6 +3,9 @@ package com.game.flappybird.component;
 import java.awt.Graphics;
 
 import com.game.flappybird.util.Constant;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MovingPipe extends Pipe {
 
@@ -16,6 +19,7 @@ public class MovingPipe extends Pipe {
         super();
     }
 
+    @Override
     public void setAttribute(int x, int y, int height, int type, boolean visible) {
         super.setAttribute(x, y, height, type, visible);
         dealtY = 0;
@@ -33,8 +37,12 @@ public class MovingPipe extends Pipe {
             case TYPE_BOTTOM_HARD -> drawBottomHard(g);
 
         }
-        if (bird.isDead()) {
-            return;
+        try {
+            if (bird.isDead()) {
+                return;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(MovingPipe.class.getName()).log(Level.SEVERE, null, ex);
         }
         movement();
 

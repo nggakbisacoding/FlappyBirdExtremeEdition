@@ -5,6 +5,9 @@ import java.awt.image.BufferedImage;
 
 import com.game.flappybird.util.Constant;
 import com.game.flappybird.util.GameUtil;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Pipe {
     static BufferedImage[] imgs;
@@ -73,9 +76,12 @@ public class Pipe {
         }
 //      g.setColor(Color.black);
 //      g.drawRect((int) pipeRect.getX(), (int) pipeRect.getY(), (int) pipeRect.getWidth(), (int) pipeRect.getHeight());
-
-        if (bird.isDead()) {
-            return;
+        try {
+            if (bird.isDead()) {
+                return;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Pipe.class.getName()).log(Level.SEVERE, null, ex);
         }
         movement();
     }
