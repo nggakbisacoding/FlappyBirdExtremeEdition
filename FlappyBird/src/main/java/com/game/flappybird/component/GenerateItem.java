@@ -16,4 +16,12 @@ public class GenerateItem extends Item{
     public GenerateItem(String name, String effect, int amount) {
         super(name, effect, amount);
     }
+
+    public GenerateItem(List<Item> item) {
+        this.item = item;
+    }
+
+    public List<Item> getItem() {
+        return item;
+    }
 }

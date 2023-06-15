@@ -11,9 +11,11 @@ import javax.sound.sampled.LineUnavailableException;
 
 public class GameElementLayer {
     private final List<Pipe> pipes;
+    private final List<Item> items;
 
     public GameElementLayer() {
         pipes = new ArrayList<>();
+        items = new ArrayList<>();
     }
 
     public void draw(Graphics g, Bird bird) throws LineUnavailableException, IOException {
@@ -158,7 +160,7 @@ public class GameElementLayer {
     }
 
     public void isCollideBird(Bird bird) throws LineUnavailableException, IOException {
-        if (bird.isDead()) {
+        if (bird.isDead() && bird.getHealth() == 0) {
             return;
         }
         for (Pipe pipe : pipes) {

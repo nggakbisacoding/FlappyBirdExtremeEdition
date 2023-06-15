@@ -18,10 +18,6 @@ public class Item {
         this.effect = effect;
         this.amount = amount;
     }
+
     
-    public void Use() {
-        if(this.name == "null") {
-            
-        }
-    }
 }
