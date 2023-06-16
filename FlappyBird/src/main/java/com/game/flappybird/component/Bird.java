@@ -22,7 +22,7 @@ public class Bird {
     private static int heart;
 
     private BufferedImage image;
-    private final BufferedImage[] heartImage;
+    private BufferedImage heartImage;
 
     private int state;
     public static final int BIRD_NORMAL = 0;
@@ -51,12 +51,10 @@ public class Bird {
             }
         }
         
-        heartImage = new BufferedImage[heart];
-        for(int i = 0;i<heart;i++) {
-            heartImage[i] = GameUtil.loadBufferedImage(Constant.HEART_PATH);
-        }
+        heartImage = GameUtil.loadBufferedImage(Constant.HEART_PATH);
 
         assert birdImages[0][0] != null;
+        assert heartImage != null;
         BIRD_WIDTH = birdImages[0][0].getWidth();
         BIRD_HEIGHT = birdImages[0][0].getHeight();
 
@@ -78,11 +76,11 @@ public class Bird {
             image = birdImages[BIRD_UP][0];
         g.drawImage(image, x - halfImgWidth, y - halfImgHeight, null); 
 
-        if (state == BIRD_DEAD && heart <= 0)
+        if (state == BIRD_DEAD && heart < 1)
             gameOverAnimation.draw(g, this);
         else if (state != BIRD_DEAD_FALL)
-            drawHeart(g);
             drawScore(g);
+        drawHeart(g);
 //      g.setColor(Color.black);
 //      g.drawRect((int) birdRect.getX(), (int) birdRect.getY(), (int) birdRect.getWidth(), (int) birdRect.getHeight());
     }
@@ -173,15 +171,17 @@ public class Bird {
         g.setColor(Color.white);
         g.setFont(Constant.CURRENT_SCORE_FONT);
         String str = Long.toString(counter.getCurrentScore());
-        int x = Constant.FRAME_WIDTH - GameUtil.getStringWidth(Constant.CURRENT_SCORE_FONT, str) >> 1;
-        g.drawString(str, x, Constant.FRAME_HEIGHT / 10);
+        int height = Constant.FRAME_WIDTH - GameUtil.getStringWidth(Constant.CURRENT_SCORE_FONT, str) >> 1;
+        g.drawString(str, height, Constant.FRAME_HEIGHT / 10);
     }
     
     private void drawHeart(Graphics g) {
-        int frame_heart = 20;
-        for (BufferedImage data : heartImage) {
-            g.drawImage(data, frame_heart, Constant.FRAME_HEIGHT, null);
-            frame_heart += 20;
+        g.setColor(Color.white);
+        g.setFont(Constant.CURRENT_SCORE_FONT);
+        int width = 20;
+        for (int i=0;i<=heart;i++) {
+            g.drawImage(heartImage, width, Constant.FRAME_HEIGHT / 15, null);
+            width += 40;
         }
     }
 
@@ -204,7 +204,7 @@ public class Bird {
         int ImgHeight = birdImages[state][0].getHeight();
         birdCollisionRect.y = y - ImgHeight / 2 + RECT_DESCALE * 2;
         
-        heart -= 1;
+        heart--;
     }
     
     private boolean keyFlag = true; 

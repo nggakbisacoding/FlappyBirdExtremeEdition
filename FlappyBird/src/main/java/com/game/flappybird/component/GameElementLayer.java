@@ -92,7 +92,6 @@ public class GameElementLayer {
                     e.printStackTrace();
                 }
             }
-
         }
     }
     
@@ -113,6 +112,7 @@ public class GameElementLayer {
             items.add(pos);
         } else {
             Item pos = ItemPool.get("Item");
+            
         }
     }
 

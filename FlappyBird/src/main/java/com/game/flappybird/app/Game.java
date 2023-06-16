@@ -85,7 +85,7 @@ public class Game extends Frame {
                 case STATE_OVER -> {
                     if (keycode == KeyEvent.VK_SPACE) {
                         try {
-                            if(bird.getHealth() >= 0)
+                            if(bird.getHealth() > 0)
                                 resetNotDead();
                             else
                                 resetGame();

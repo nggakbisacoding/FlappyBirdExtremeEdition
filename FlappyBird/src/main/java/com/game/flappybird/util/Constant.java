@@ -47,7 +47,7 @@ public class Constant {
 
 	public static final String SCORE_FILE_PATH = "resources/score";
 
-	public static final int GAME_SPEED = 11;
+	public static final int GAME_SPEED = 7;
 
 	public static final Color BG_COLOR = new Color(0x4bc4cf);
 
