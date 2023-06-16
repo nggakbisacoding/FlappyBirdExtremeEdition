@@ -121,6 +121,7 @@ public class Bird {
         counter.saveScore();
         state = BIRD_DEAD;
         Game.setGameState(Game.STATE_OVER);
+        
     }
     
     public int getHealth() {
@@ -173,6 +174,10 @@ public class Bird {
         String str = Long.toString(counter.getCurrentScore());
         int height = Constant.FRAME_WIDTH - GameUtil.getStringWidth(Constant.CURRENT_SCORE_FONT, str) >> 1;
         g.drawString(str, height, Constant.FRAME_HEIGHT / 10);
+    }
+    
+    public void birdBoost(Item item) {
+        item.openBox(this);
     }
     
     private void drawHeart(Graphics g) {

@@ -18,7 +18,7 @@ public class GameElementLayer {
         items = new ArrayList<>();
     }
 
-    public void draw(Graphics g, Bird bird) throws LineUnavailableException, IOException {
+    public void draw(Graphics g, Bird bird) throws LineUnavailableException, IOException, Exception {
         for (int i = 0; i < pipes.size(); i++) {
             Pipe pipe = pipes.get(i);
             if (pipe.isVisible()) {
@@ -41,7 +41,7 @@ public class GameElementLayer {
         }
         isCollideBird(bird);
         pipeBornLogic(bird);
-        spawnItem(bird);
+        bornItem(bird);
     }
 
     public static final int VERTICAL_INTERVAL = Constant.FRAME_HEIGHT / 5;
@@ -95,7 +95,7 @@ public class GameElementLayer {
         }
     }
     
-    public void bornItem(Bird bird) throws IOException {
+    public void bornItem(Bird bird) throws IOException, LineUnavailableException {
         if (bird.isDead()) {
             return;
         }
@@ -106,13 +106,37 @@ public class GameElementLayer {
             int top = pipe1.getX() - pipe1.getHeight();
             int bottom = pipe2.getX();
             
-            Item pos = ItemPool.get("Item");
-            pos.setAttribute(top, bottom, Item.ITEM_HEIGHT, true);
+            try {
+                Item pos = ItemPool.get("Item");
+                pos.setAttribute(top, bottom, Item.ITEM_HEIGHT, true);
             
-            items.add(pos);
+                items.add(pos);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
         } else {
-            Item pos = ItemPool.get("Item");
-            
+            Item lastItem = items.get(items.size() - 1); 
+            Pipe pool = PipePool.get("Pipe");
+            int currentpos = pool.getX() + Pipe.PIPE_WIDTH * 2;
+            int currentScore = (int) ScoreCounter.getInstance().getCurrentScore() + 1;
+            if (pool.isInFrame()) {
+                if (items.size() >= ItemPool.FULL_ITEM - 2
+                        && currentpos <= currentScore + Item.BOX_HEAD_WIDTH * 3 / 2) {
+                    ScoreCounter.getInstance().score(bird);
+                }
+                try {
+                    if (GameUtil.isInProbability(currentScore, 20)) {
+                        if (GameUtil.isInProbability(1, 4))
+                            SpawnItem(lastItem);
+                    } else {
+                            SpawnItem(lastItem);
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }     
         }
     }
 
@@ -202,10 +226,26 @@ public class GameElementLayer {
         }
     }
 
-    public void spawnItem(Bird bird) throws LineUnavailableException, IOException {
-        Item item = null; 
-        if (item != null) {
+    public void SpawnItem(Item item) throws LineUnavailableException, IOException, Exception {
+         if (GameUtil.isInProbability(1, 100)) { // Adjust the probability as needed
+            int spaceBetweenPipes = VERTICAL_INTERVAL - Pipe.PIPE_WIDTH;
+            int itemHeight = GameUtil.getRandomNumber(MIN_HEIGHT, MAX_HEIGHT - spaceBetweenPipes);
+            int itemY = GameUtil.getRandomNumber(0, spaceBetweenPipes);
+            int itemX = Constant.FRAME_WIDTH + Pipe.PIPE_WIDTH; // X position to spawn the item
+            
+            item.setAttribute(itemX, itemY, itemHeight, true);
             items.add(item);
+         }
+    }
+    
+    public void isCollideBirdItem(Bird bird) throws IOException {
+        if (bird.isDead() && bird.getHealth() == 0) {
+            return;
+        }
+        for (Item item : items) {
+            if (item.getitemRect().intersects(bird.getBirdCollisionRect())) {
+                bird.birdBoost(item);
+            }
         }
     }
 

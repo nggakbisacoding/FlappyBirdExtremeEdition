@@ -4,7 +4,10 @@ import com.game.flappybird.component.GameElementLayer;
 import com.game.flappybird.component.Bird;
 import com.game.flappybird.component.GameBackground;
 import com.game.flappybird.component.GameForeground;
+import com.game.flappybird.component.Item;
+import com.game.flappybird.component.ItemPool;
 import com.game.flappybird.component.WelcomeAnimation;
+import com.game.flappybird.util.Constant;
 
 import static com.game.flappybird.util.Constant.FRAME_HEIGHT;
 import static com.game.flappybird.util.Constant.FRAME_WIDTH;
@@ -101,6 +104,7 @@ public class Game extends Frame {
             setGameState(GAME_START);
             gameElement.reset();
             bird.resetNotDead();
+            System.out.println(ItemPool.FULL_ITEM+" "+Constant.FRAME_WIDTH+" "+GameElementLayer.HORIZONTAL_INTERVAL+" "+Item.BOX_HEAD_WIDTH);
         }
 
         private void resetGame() throws IOException {
@@ -164,7 +168,7 @@ public class Game extends Frame {
         } else {
             try {
                 gameElement.draw(bufG, bird);
-            } catch (LineUnavailableException | IOException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

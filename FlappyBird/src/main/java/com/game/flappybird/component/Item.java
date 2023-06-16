@@ -1,6 +1,5 @@
 package com.game.flappybird.component;
 
-import static com.game.flappybird.component.Pipe.imgs;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 
@@ -8,29 +7,34 @@ import com.game.flappybird.util.Constant;
 import com.game.flappybird.util.GameUtil;
 import java.awt.Graphics;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Item {
     static BufferedImage[] imgs;
     
     static {
         final int BOX_IMAGE_COUNT = 2;
         imgs = new BufferedImage[BOX_IMAGE_COUNT];
-        for (int i = 0; i < BOX_IMAGE_COUNT; i++) {
-            imgs[i] = GameUtil.loadBufferedImage(Constant.BOX_IMG_PATH[i]);
+        int count = 0;
+        for (String data : Constant.BOX_IMG_PATH) {
+            imgs[count] = GameUtil.loadBufferedImage(data);
+            count++;
         }
     }
 
     int speed;
     int width, height;
     
-    private static final int ITEM_WIDTH = imgs[0].getWidth();
+    public static final int ITEM_WIDTH = imgs[0].getWidth();
     public static final int ITEM_HEIGHT = imgs[0].getHeight();
     public static final int BOX_HEAD_WIDTH = imgs[1].getWidth();
     public static final int BOX_HEAD_HEIGHT = imgs[1].getHeight();
 
     Rectangle itemRect;
-    private int x;
-    private int y;
-    private boolean visible;
+    int x, y;
+    boolean visible;
     
     public void setAttribute(int x, int y, int height, boolean visible) {
         this.x = x;
@@ -85,7 +89,7 @@ public class Item {
     }
     
     public void openBox(Bird bird) {
-        
+        visible = false;
     }
 
     public Rectangle getitemRect() {
