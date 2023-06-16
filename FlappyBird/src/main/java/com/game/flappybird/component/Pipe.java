@@ -129,6 +129,10 @@ public class Pipe {
     public int getX() {
         return x;
     }
+    
+    public int getHeight() {
+        return height;
+    }
 
     public Rectangle getPipeRect() {
         return pipeRect;

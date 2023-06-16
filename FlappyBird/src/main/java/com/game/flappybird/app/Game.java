@@ -98,7 +98,7 @@ public class Game extends Frame {
         }
         
         private void resetNotDead() throws IOException {
-            setGameState(GAME_READY);
+            setGameState(GAME_START);
             gameElement.reset();
             bird.resetNotDead();
         }
@@ -173,11 +173,10 @@ public class Game extends Frame {
         } catch (LineUnavailableException | IOException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
-        g.drawImage(bufImg, 0, 0, null);
+        g.drawImage(bufImg, 0, 0, this);
     }
 
     public static void setGameState(int gameState) {
         Game.gameState = gameState;
     }
-
 }

@@ -7,8 +7,8 @@ import com.game.flappybird.util.Constant;
 
 public class ItemPool {
     private static final List<Item> pool = new ArrayList<>(); 
-    public static final int MAX_ITEM_COUNT = 30; 
-    public static final int FULL_ITEM = (Constant.FRAME_WIDTH / (Pipe.PIPE_HEAD_WIDTH + GameElementLayer.HORIZONTAL_INTERVAL) + 2) * 2;
+    public static final int MAX_ITEM_COUNT = 15; 
+    public static final int FULL_ITEM = (Constant.FRAME_WIDTH / (Item.BOX_HEAD_WIDTH + GameElementLayer.HORIZONTAL_INTERVAL) + 2) * 2;
 
     static {
 	for (int i = 0; i < ItemPool.FULL_ITEM; i++) {

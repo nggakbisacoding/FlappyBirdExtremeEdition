@@ -19,10 +19,10 @@ public class Bird {
     private final int x;
     private int y;
     private int wingState;
-    private int heart = 3;
+    private static int heart;
 
     private BufferedImage image;
-    private BufferedImage heartImage;
+    private final BufferedImage[] heartImage;
 
     private int state;
     public static final int BIRD_NORMAL = 0;
@@ -50,6 +50,11 @@ public class Bird {
                 birdImages[j][i] = GameUtil.loadBufferedImage(Constant.BIRDS_IMG_PATH[j][i]);
             }
         }
+        
+        heartImage = new BufferedImage[heart];
+        for(int i = 0;i<heart;i++) {
+            heartImage[i] = GameUtil.loadBufferedImage(Constant.HEART_PATH);
+        }
 
         assert birdImages[0][0] != null;
         BIRD_WIDTH = birdImages[0][0].getWidth();
@@ -76,8 +81,8 @@ public class Bird {
         if (state == BIRD_DEAD && heart <= 0)
             gameOverAnimation.draw(g, this);
         else if (state != BIRD_DEAD_FALL)
-            drawScore(g);
             drawHeart(g);
+            drawScore(g);
 //      g.setColor(Color.black);
 //      g.drawRect((int) birdRect.getX(), (int) birdRect.getY(), (int) birdRect.getWidth(), (int) birdRect.getHeight());
     }
@@ -98,6 +103,11 @@ public class Bird {
                     MusicUtil.playCrash();
                 }
                 die();
+            }
+            else if(birdCollisionRect.y > BOTTOM_BOUNDARY && heart != 0) {
+                if (state == BIRD_FALL) {
+                    MusicUtil.playCrash();
+                }
             }
         }
     }
@@ -146,12 +156,11 @@ public class Bird {
     }
     
     public void setHeart() {
-        if(Constant.GAME_SPEED <= 5)
-            heart = 2;
-        else if(Constant.GAME_SPEED <= 10 && Constant.GAME_SPEED > 5)
-            heart = 1;
-        else
-            heart = 0;
+        heart = switch (Difficulty.getDifficulty()) {
+            case "Easy" -> 2;
+            case "Medium" -> 1;
+            default -> 0;
+        };
     }
 
     public boolean isDead() throws IOException {
@@ -169,10 +178,11 @@ public class Bird {
     }
     
     private void drawHeart(Graphics g) {
-        g.setColor(Color.red);
-        int x = Constant.FRAME_HEIGHT - 20;
-        heartImage = GameUtil.loadBufferedImage(Constant.HEART_PATH);
-        g.drawImage(heartImage, x, Constant.FRAME_WIDTH-Constant.FRAME_WIDTH+20, null);
+        int frame_heart = 20;
+        for (BufferedImage data : heartImage) {
+            g.drawImage(data, frame_heart, Constant.FRAME_HEIGHT, null);
+            frame_heart += 20;
+        }
     }
 
     public void reset() throws IOException {
@@ -190,14 +200,13 @@ public class Bird {
         state = BIRD_NORMAL;
         y = Constant.FRAME_HEIGHT >> 1;
         velocity = 0;
-        wingState = 0;
         
         int ImgHeight = birdImages[state][0].getHeight();
         birdCollisionRect.y = y - ImgHeight / 2 + RECT_DESCALE * 2;
         
         heart -= 1;
     }
-
+    
     private boolean keyFlag = true; 
 
     public void keyPressed() {

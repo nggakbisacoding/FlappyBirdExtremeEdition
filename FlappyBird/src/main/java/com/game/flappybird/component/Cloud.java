@@ -29,10 +29,10 @@ public class Cloud {
     }
 
     public void draw(Graphics g, Bird bird) throws IOException {
-        int speed = this.speed;
+        int speeds = this.speed;
         if (bird.isDead())
-            speed = 1;
-        x -= speed;
+            speeds = 1;
+        x -= speeds;
         g.drawImage(img, x, y, scaleImageWidth, scaleImageHeight, null);
     }
 

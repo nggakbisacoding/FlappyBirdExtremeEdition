@@ -18,6 +18,7 @@ public class App extends JPanel{
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
+        frame.pack();
         frame.setVisible(true);
     }
 }

@@ -43,10 +43,11 @@ public class Constant {
 	public static final String OVER_IMG_PATH = "resources/img/over.png";
 	public static final String AGAIN_IMG_PATH = "resources/img/again.png";
         public static final String HEART_PATH = "resources/img/heart.png";
+        public static final String[] BOX_IMG_PATH = { "resources/img/Box_0.png", "resource/img/Box_1.png"};
 
 	public static final String SCORE_FILE_PATH = "resources/score";
 
-	public static final int GAME_SPEED = 8;
+	public static final int GAME_SPEED = 11;
 
 	public static final Color BG_COLOR = new Color(0x4bc4cf);
 

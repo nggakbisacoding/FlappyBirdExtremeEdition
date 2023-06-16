@@ -29,6 +29,16 @@ public class GameElementLayer {
                 i--;
             }
         }
+        for (int i = 0; i < items.size(); i++) {
+            Item item = items.get(i);
+            if(item.isVisible()) {
+                item.draw(g, bird);
+            } else {
+                Item remove = items.remove(i);
+                ItemPool.giveBack(remove);
+                i--;
+            }
+        }
         isCollideBird(bird);
         pipeBornLogic(bird);
         spawnItem(bird);
@@ -43,7 +53,7 @@ public class GameElementLayer {
         if (bird.isDead()) {
             return;
         }
-        if (pipes.size() == 0) {
+        if (pipes.isEmpty()) {
             int topHeight = GameUtil.getRandomNumber(MIN_HEIGHT, MAX_HEIGHT + 1);
 
             Pipe top = PipePool.get("Pipe");
@@ -83,6 +93,26 @@ public class GameElementLayer {
                 }
             }
 
+        }
+    }
+    
+    public void bornItem(Bird bird) throws IOException {
+        if (bird.isDead()) {
+            return;
+        }
+        if(items.isEmpty()) {
+            Pipe pipe1 = pipes.get(0);
+            Pipe pipe2 = pipes.get(1);
+            
+            int top = pipe1.getX() - pipe1.getHeight();
+            int bottom = pipe2.getX();
+            
+            Item pos = ItemPool.get("Item");
+            pos.setAttribute(top, bottom, Item.ITEM_HEIGHT, true);
+            
+            items.add(pos);
+        } else {
+            Item pos = ItemPool.get("Item");
         }
     }
 

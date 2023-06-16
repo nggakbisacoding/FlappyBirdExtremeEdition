@@ -1,11 +1,20 @@
 package com.game.flappybird.component;
 
+import com.game.flappybird.util.Constant;
+
 public class Difficulty {
-    static int state;
-    private static final int EASY = 0;
-    private static final int MEDIUM = 1;
+    private static String state;
 
     public static String getDifficulty() {
-        return state == EASY ? "Easy" : state == MEDIUM ? "Medium" : "Hard";
+        setDifficulty();
+        return state == "EASY" ? "Easy" : state == "MEDIUM" ? "Medium" : "ASIAN MODE";
+    }
+    
+    public static void setDifficulty() {
+        if(Constant.GAME_SPEED < 5) {
+            state = "EASY";
+        } else if (Constant.GAME_SPEED > 5 && Constant.GAME_SPEED < 10) {
+            state = "MEDIUM";
+        }
     }
 }
