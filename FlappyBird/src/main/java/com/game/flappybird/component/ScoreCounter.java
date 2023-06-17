@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import com.game.flappybird.util.Constant;
+import com.game.flappybird.util.GameUtil;
 import com.game.flappybird.util.MusicUtil;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -64,6 +65,18 @@ public class ScoreCounter {
                             MusicUtil.playScore();
 		}
 	}
+        
+        public void setScore(Bird bird, int state) throws IOException {
+            if(bird.isDead()) {
+                return;
+            }
+            if(state != 3) {
+                score -= GameUtil.getRandomNumber(1, 20);
+            } else {
+                score += GameUtil.getRandomNumber(1, 20);
+            }
+            
+        }
 
 	public long getBestScore() {
 		return bestScore;

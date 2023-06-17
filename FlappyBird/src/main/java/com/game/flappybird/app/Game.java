@@ -4,7 +4,10 @@ import com.game.flappybird.component.GameElementLayer;
 import com.game.flappybird.component.Bird;
 import com.game.flappybird.component.GameBackground;
 import com.game.flappybird.component.GameForeground;
+import com.game.flappybird.component.Item;
+import com.game.flappybird.component.ItemPool;
 import com.game.flappybird.component.WelcomeAnimation;
+import com.game.flappybird.util.Constant;
 
 import static com.game.flappybird.util.Constant.FRAME_HEIGHT;
 import static com.game.flappybird.util.Constant.FRAME_WIDTH;
@@ -85,7 +88,7 @@ public class Game extends Frame {
                 case STATE_OVER -> {
                     if (keycode == KeyEvent.VK_SPACE) {
                         try {
-                            if(bird.getHealth() >= 0)
+                            if(bird.getHealth() > 0)
                                 resetNotDead();
                             else
                                 resetGame();
@@ -98,7 +101,7 @@ public class Game extends Frame {
         }
         
         private void resetNotDead() throws IOException {
-            setGameState(GAME_READY);
+            setGameState(GAME_START);
             gameElement.reset();
             bird.resetNotDead();
         }
@@ -164,7 +167,7 @@ public class Game extends Frame {
         } else {
             try {
                 gameElement.draw(bufG, bird);
-            } catch (LineUnavailableException | IOException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -173,11 +176,10 @@ public class Game extends Frame {
         } catch (LineUnavailableException | IOException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
-        g.drawImage(bufImg, 0, 0, null);
+        g.drawImage(bufImg, 0, 0, this);
     }
 
     public static void setGameState(int gameState) {
         Game.gameState = gameState;
     }
-
 }
