@@ -35,10 +35,11 @@ public class Item {
     public static int BOX_HEAD_WIDTH = imgs[1].getWidth();
     
     Rectangle itemRect;
-    int x, y;
+    int x, y, dura;
     boolean visible;
     
     public void setAttribute(int x, int y, int height, boolean visible) {
+        dura = GameUtil.getRandomNumber(1, 10);
         this.x = x;
         this.y = y;
         this.height = height;
@@ -68,15 +69,12 @@ public class Item {
         x -= speed;
         itemRect.x -= speed;
         if (x < -1 * ITEM_WIDTH) {
-            visible = false;
+            visible = true;
         }
     }
     
     public void draw(Graphics g, Bird bird) throws IOException {
         drawItem(g);
-        if (bird.getBirdCollisionRect().y == width) {
-            openBox(bird);
-        }
         if(bird.isDead()) {
             return;
         }
@@ -84,10 +82,7 @@ public class Item {
     }
     
     public void drawItem(Graphics g) {
-        int count = (height - BOX_HEAD_HEIGHT) / ITEM_HEIGHT + 1;
-        for (int i = 0; i < count; i++) {
-            g.drawImage(imgs[0], x, y + i * ITEM_HEIGHT, null);
-        }
+        g.drawImage(imgs[0], x, y * ITEM_HEIGHT, null);
     }
 
     public boolean isInFrame() {
@@ -98,8 +93,15 @@ public class Item {
         return x;
     }
     
-    public void openBox(Bird bird) {
-        visible = false;
+    public int getDura() {
+        return dura;
+    }
+    
+    public void openBox(Graphics g, Bird bird) throws IOException {
+        if(bird.isDead()) {
+            return;
+        }
+        g.drawImage(imgs[1], x, y * BOX_HEAD_HEIGHT, null);
     }
 
     public Rectangle getitemRect() {

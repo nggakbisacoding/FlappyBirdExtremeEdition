@@ -7,7 +7,6 @@ import java.util.List;
 import com.game.flappybird.util.Constant;
 import com.game.flappybird.util.GameUtil;
 import java.io.IOException;
-import java.util.Random;
 import javax.sound.sampled.LineUnavailableException;
 
 public class GameElementLayer {
@@ -41,6 +40,7 @@ public class GameElementLayer {
             }
         }
         isCollideBird(bird);
+        isCollideBirdItem(g, bird);
         pipeBornLogic(bird);
         bornItem(bird);
     }
@@ -101,7 +101,7 @@ public class GameElementLayer {
             return;
         }
         if(items.isEmpty()) {
-            if(GameUtil.isInProbability(1, 20)) {
+            if(GameUtil.isInProbability(1, 4)) {
                 Pipe pipe = pipes.get(pipes.size()-1);
                 int top = pipe.height - Item.BOX_HEAD_HEIGHT;
                 int bottom = GameUtil.getRandomNumber(top, Item.HEAD_HEIGHT);
@@ -129,21 +129,21 @@ public class GameElementLayer {
             }
         } else {
             Item lastItem = items.get(items.size() - 1); 
-            Pipe pool = PipePool.get("Pipe");
+            Pipe pool = pipes.get(0);
             int currentpos = pool.getX() + Pipe.PIPE_WIDTH * 2;
             int currentScore = (int) ScoreCounter.getInstance().getCurrentScore() + 1;
-            if (!pool.isInFrame()) {
+            if (pool.isInFrame()) {
                 if (items.size() >= ItemPool.FULL_ITEM - 2
                         && currentpos <= currentScore + Item.HEAD_WIDTH * 3 / 2) {
                     ScoreCounter.getInstance().score(bird); 
                 }
                 try {
                     if (GameUtil.isInProbability(currentScore, GameUtil.getRandomNumber(1, 50))) {
-                        if (GameUtil.isInProbability(1, 4))
-                           SpawnItem(lastItem); 
-                    } else {
-                        if (GameUtil.isInProbability(1, 2))
+                        if (GameUtil.isInProbability(1, 5))
                             movingItem(lastItem);
+                    } else {
+                        if (GameUtil.isInProbability(1, 4))
+                            SpawnItem(lastItem);
                     }
                 }
                 catch (Exception e) {
@@ -240,10 +240,10 @@ public class GameElementLayer {
     }
 
     public void SpawnItem(Item item) throws LineUnavailableException, IOException, Exception {
-         if (GameUtil.isInProbability(1, 5)) { // Adjust the probability as needed
+         if (GameUtil.isInProbability(1, 10)) { // Adjust the probability as needed
             int spaceBetweenPipes = VERTICAL_INTERVAL - Item.ITEM_WIDTH;
             int itemHeight = GameUtil.getRandomNumber(MIN_HEIGHT, MAX_HEIGHT - spaceBetweenPipes);
-            int itemY = GameUtil.getRandomNumber(0, spaceBetweenPipes);
+            int itemY = GameUtil.getRandomNumber(100, spaceBetweenPipes);
             int itemX = Constant.FRAME_WIDTH + Item.ITEM_WIDTH; // X position to spawn the item
             
             item.setAttribute(itemX, itemY, itemHeight, true);
@@ -252,8 +252,11 @@ public class GameElementLayer {
     }
     
     private void movingItem(Item item) throws Exception {
-        if (GameUtil.isInProbability(1, 4)) {
-            int rnd = GameUtil.getRandomNumber(100,350);
+        int count = 1;
+        int rand = GameUtil.getRandomNumber(1, 20);
+        int dominator = GameUtil.getRandomNumber(count, GameUtil.getRandomNumber(count,rand));
+        if (GameUtil.isInProbability(count, dominator)) {
+            int rnd = GameUtil.getRandomNumber(150,350);
             int topHeight = Item.HEAD_HEIGHT;
             int x = item.getX() + HORIZONTAL_INTERVAL;
 
@@ -264,13 +267,14 @@ public class GameElementLayer {
         }
     }
     
-    public void isCollideBirdItem(Bird bird) throws IOException {
+    public void isCollideBirdItem(Graphics g, Bird bird) throws IOException, Exception {
         if (bird.isDead() && bird.getHealth() == 0) {
             return;
         }
         for (Item item : items) {
-            if (item.getitemRect().intersects(bird.getBirdCollisionRect())) {
-                bird.birdBoost(item);
+            if (item.getitemRect().y == bird.getBirdCollisionRect().y) {
+                item.openBox(g, bird);
+                bird.birdBoost(g, item);
             }
         }
     }

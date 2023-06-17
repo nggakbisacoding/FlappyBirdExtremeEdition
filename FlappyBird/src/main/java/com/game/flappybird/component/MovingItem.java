@@ -3,16 +3,18 @@ package com.game.flappybird.component;
 import java.awt.Graphics;
 
 import com.game.flappybird.util.Constant;
+import com.game.flappybird.util.GameUtil;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MovingItem extends Item{
     private int dealtY;
-    public static final int MAX_DELTA = 100;
+    public static final int MAX_DELTA = 25;
     private int direction;
     public static final int DIR_UP = 0;
     public static final int DIR_DOWN = 1;
+    private int rand;
 
     public MovingItem() {
         super();
@@ -22,15 +24,13 @@ public class MovingItem extends Item{
     public void setAttribute(int x, int y, int height, boolean visible) {
         super.setAttribute(x, y, height, visible);
         dealtY = 0;
-        direction = DIR_DOWN;
+        rand = GameUtil.getRandomNumber(DIR_UP, DIR_DOWN);
+        direction = rand;
     }
     
     @Override
-    public void draw(Graphics g, Bird bird) {
+    public void draw(Graphics g, Bird bird) throws IOException {
         drawItem(g);
-        if (bird.getBirdCollisionRect().y == width) {
-            openBox(bird);
-        }
         try {
             if (bird.isDead()) {
                 return;
@@ -43,11 +43,7 @@ public class MovingItem extends Item{
 
     @Override
     public void drawItem(Graphics g) {
-        int count = (height - 2 * BOX_HEAD_HEIGHT) / ITEM_HEIGHT + 1;
         g.drawImage(imgs[0], x - ((BOX_HEAD_WIDTH - width) >> 1), y + dealtY, null);
-        for (int i = 0; i < count; i++) {
-            g.drawImage(imgs[0], x, y + dealtY + i * ITEM_HEIGHT + BOX_HEAD_HEIGHT, null);
-        }
     }
     
     private void movement() {

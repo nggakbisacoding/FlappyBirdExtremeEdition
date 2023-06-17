@@ -76,11 +76,13 @@ public class Bird {
             image = birdImages[BIRD_UP][0];
         g.drawImage(image, x - halfImgWidth, y - halfImgHeight, null); 
 
-        if (state == BIRD_DEAD && heart < 1)
+        if (state == BIRD_DEAD && heart < 1) {
             gameOverAnimation.draw(g, this);
-        else if (state != BIRD_DEAD_FALL)
+        }
+        else if (heart >= 0 && state != BIRD_DEAD_FALL) {
+            drawHeart(g);
             drawScore(g);
-        drawHeart(g);
+        }
 //      g.setColor(Color.black);
 //      g.drawRect((int) birdRect.getX(), (int) birdRect.getY(), (int) birdRect.getWidth(), (int) birdRect.getHeight());
     }
@@ -176,13 +178,52 @@ public class Bird {
         g.drawString(str, height, Constant.FRAME_HEIGHT / 10);
     }
     
-    public void birdBoost(Item item) {
-        item.openBox(this);
+    public void birdBoost(Graphics g, Item item) throws IOException, Exception {
+        int states = GenerateItem.state;
+        GenerateItem.setRandomItem();
+        GenerateItem gI = new GenerateItem();
+        g.setFont(Constant.CURRENT_SCORE_FONT);
+        g.setColor(Color.white);
+        int dura = item.getDura();
+        int counters = dura;
+        item.openBox(g ,this);
+        if(GameUtil.isInProbability(1, 1000)) {
+            for(int i=0;i<=dura;i++) {
+                g.drawString("You die!", this.getBirdX(), Constant.FRAME_HEIGHT/3);
+            }
+            die();
+        } else if(GameUtil.isInProbability(1, 500) && gI.isBoosted()) {
+            if(Difficulty.getDifficulty() != "Easy") {
+                Constant.GAME_SPEED++;
+                for(int i=0;i<=dura;i++) {
+                    g.drawString(String.valueOf(counters), this.getBirdX(), Constant.FRAME_HEIGHT/10);
+                    counters--;
+                    if(i==dura)
+                        Constant.GAME_SPEED--;
+                }
+            } else {
+                return;
+            }
+        } else if(GameUtil.isInProbability(1, 200) && gI.isScored()) {
+            if(GameUtil.isInProbability(1, 2))
+                counter.setScore(this, states);
+            else
+                counter.setScore(this, states);
+            String text = state == 2 ? "Score Down" : "Score Up";
+            g.drawString(text, this.getBirdX(), Constant.FRAME_HEIGHT/10);
+        } else {
+            drawNothing(g);
+        }
+    }
+    
+    private void drawNothing(Graphics g) {
+        g.setColor(Color.white);
+        g.setFont(Constant.CURRENT_SCORE_FONT);
+        int up = y+30;
+        g.drawString("Nothing", getBirdX(), up);
     }
     
     private void drawHeart(Graphics g) {
-        g.setColor(Color.white);
-        g.setFont(Constant.CURRENT_SCORE_FONT);
         int width = 20;
         for (int i=0;i<=heart;i++) {
             g.drawImage(heartImage, width, Constant.FRAME_HEIGHT / 15, null);

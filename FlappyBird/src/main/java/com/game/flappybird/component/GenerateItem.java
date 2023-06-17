@@ -1,37 +1,22 @@
 package com.game.flappybird.component;
 
+import com.game.flappybird.util.GameUtil;
 import java.util.List;
 
-public class GenerateItem extends Item{
-    private static int state;
-    private static final int BOOST_UP = 0;
-    private static final int BOOST_DOWN = 1;
-    private static final int SPEED_UP = 2;
-    private static final int SCORE_DOWN = 3;
-    private static final int SCORE_UP = 4;
-    private List<Item> item;
+public class GenerateItem{
+    public static int state;
+    public static final int SPEED_UP = 0;
+    public static final int SPEED_DOWN = 1;
+    public static final int SCORE_DOWN = 2;
+    public static final int SCORE_UP = 3;
+    public static int dura;
     
-    public GenerateItem() {
-        super();
-    }
-
-    public List<Item> getItem() {
-        return item;
-    }
-    
-    public Item RandomItem() {
-        for(Item data :item) {
-            Item items = (Item) item;
-        }
-        return null;
-    }
-    
-    public void setRandomItem() {
-        
+    public static void setRandomItem() {
+        state = GameUtil.getRandomNumber(SPEED_UP, SCORE_UP);
     }
     
     public boolean isBoosted() {
-        return state == BOOST_UP || state == BOOST_DOWN;
+        return state == SPEED_UP || state == SPEED_DOWN;
     }
     
     public boolean isScored() {
