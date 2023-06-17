@@ -9,52 +9,67 @@ import java.io.FileOutputStream;
 import com.game.flappybird.util.Constant;
 import com.game.flappybird.util.GameUtil;
 import com.game.flappybird.util.MusicUtil;
+import java.io.EOFException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.sound.sampled.LineUnavailableException;
 
 public class ScoreCounter {
+    
+    private static class ScoreCounterHolder {
+        private static final ScoreCounter scoreCounter = new ScoreCounter();
+    }
 
-	private static class ScoreCounterHolder {
-		private static final ScoreCounter scoreCounter = new ScoreCounter();
+    public static ScoreCounter getInstance() {
+        return ScoreCounterHolder.scoreCounter;
+    }
+
+    private long score = 0;
+    private long bestScore;
+
+    private ScoreCounter() {
+        bestScore = -1;
+	try {
+            loadBestScore();
+	} catch (Exception e) {
+            e.printStackTrace();
 	}
+    }
 
-	public static ScoreCounter getInstance() {
-		return ScoreCounterHolder.scoreCounter;
+    private void loadBestScore() throws Exception { 
+        File file;
+        if(!"ASIAN MODE".equals(Difficulty.getDifficulty())) {
+            file = new File(Constant.SCORE_FILE_PATH[1]);
+        }  else {
+            file = new File(Constant.SCORE_FILE_PATH[0]);
+        }
+        if (file.exists()) {
+            try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
+                bestScore = dis.readLong();
+            } catch (EOFException e) {
+                
+            }
+        }
+    }
+
+    public void saveScore() {
+        File file;
+        try {
+            if(Difficulty.getDifficulty() != "ASIAN MODE") {
+                file = new File(Constant.SCORE_FILE_PATH[1]);
+            }  else {
+                file = new File(Constant.SCORE_FILE_PATH[0]);
+            }
+            bestScore = Math.max(bestScore, getCurrentScore());
+            try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {
+                dos.writeLong(bestScore);
+            } catch (EOFException e) {
+                
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
 	}
-
-	private long score = 0;
-	private long bestScore;
-
-	private ScoreCounter() {
-		bestScore = -1;
-		try {
-			loadBestScore();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void loadBestScore() throws Exception {
-		File file = new File(Constant.SCORE_FILE_PATH);
-		if (file.exists()) {
-                    try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
-                        bestScore = dis.readLong();
-                    }
-		}
-	}
-
-	public void saveScore() {
-		bestScore = Math.max(bestScore, getCurrentScore());
-		try {
-			File file = new File(Constant.SCORE_FILE_PATH);
-                    try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {
-                        dos.writeLong(bestScore);
-                    }
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    }
 
 	public void score(Bird bird) throws LineUnavailableException, IOException {
 		if (!bird.isDead()) {

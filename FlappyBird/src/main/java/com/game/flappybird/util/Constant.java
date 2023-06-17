@@ -45,7 +45,7 @@ public class Constant {
         public static final String HEART_PATH = "resources/img/heart.png";
         public static final String[] BOX_IMG_PATH = { "resources/img/box0.png", "resources/img/box1.png"};
 
-	public static final String SCORE_FILE_PATH = "resources/score";
+	public static final String[] SCORE_FILE_PATH = {"resources/score", "resources/easyscore"};
 
 	public static int GAME_SPEED = 11;
 
