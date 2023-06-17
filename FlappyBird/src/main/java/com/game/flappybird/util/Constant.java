@@ -43,7 +43,7 @@ public class Constant {
 	public static final String OVER_IMG_PATH = "resources/img/over.png";
 	public static final String AGAIN_IMG_PATH = "resources/img/again.png";
         public static final String HEART_PATH = "resources/img/heart.png";
-        public static final String[] BOX_IMG_PATH = { "resources/img/box_0.png", "resource/img/box_1.png"};
+        public static final String[] BOX_IMG_PATH = { "resources/img/box0.png", "resources/img/box1.png"};
 
 	public static final String SCORE_FILE_PATH = "resources/score";
 

@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class MovingItem extends Item{
     private int dealtY;
-    public static final int MAX_DELTA = 50;
+    public static final int MAX_DELTA = 100;
     private int direction;
     public static final int DIR_UP = 0;
     public static final int DIR_DOWN = 1;
@@ -28,6 +28,9 @@ public class MovingItem extends Item{
     @Override
     public void draw(Graphics g, Bird bird) {
         drawItem(g);
+        if (bird.getBirdCollisionRect().y == width) {
+            openBox(bird);
+        }
         try {
             if (bird.isDead()) {
                 return;
@@ -36,17 +39,15 @@ public class MovingItem extends Item{
             Logger.getLogger(MovingPipe.class.getName()).log(Level.SEVERE, null, ex);
         }
         movement();
-		g.drawRect((int) itemRect.getX(), (int) itemRect.getY(), (int) itemRect.getWidth(), (int) itemRect.getHeight());
     }
 
-    private void drawItem(Graphics g) {
+    @Override
+    public void drawItem(Graphics g) {
         int count = (height - 2 * BOX_HEAD_HEIGHT) / ITEM_HEIGHT + 1;
-        g.drawImage(imgs[2], x - ((BOX_HEAD_WIDTH - width) >> 1), y + dealtY, null);
+        g.drawImage(imgs[0], x - ((BOX_HEAD_WIDTH - width) >> 1), y + dealtY, null);
         for (int i = 0; i < count; i++) {
             g.drawImage(imgs[0], x, y + dealtY + i * ITEM_HEIGHT + BOX_HEAD_HEIGHT, null);
         }
-        int y = this.y + height - BOX_HEAD_HEIGHT;
-        g.drawImage(imgs[1], x - ((BOX_HEAD_WIDTH - width) >> 1), y + dealtY, null);
     }
     
     private void movement() {

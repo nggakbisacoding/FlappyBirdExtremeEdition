@@ -6,13 +6,15 @@ import java.awt.Rectangle;
 import com.game.flappybird.util.Constant;
 import com.game.flappybird.util.GameUtil;
 import java.awt.Graphics;
-
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Item {
     static BufferedImage[] imgs;
+    private static BufferedImage[] img;
+    public static int ITM_WIDTH;
+    public static int ITM_HEIGHT;
+    public static int HEAD_WIDTH;
+    public static int HEAD_HEIGHT;
     
     static {
         final int BOX_IMAGE_COUNT = 2;
@@ -27,11 +29,11 @@ public class Item {
     int speed;
     int width, height;
     
-    public static final int ITEM_WIDTH = imgs[0].getWidth();
-    public static final int ITEM_HEIGHT = imgs[0].getHeight();
-    public static final int BOX_HEAD_WIDTH = imgs[1].getWidth();
-    public static final int BOX_HEAD_HEIGHT = imgs[1].getHeight();
-
+    public static int ITEM_WIDTH = imgs[0].getWidth();
+    public static int ITEM_HEIGHT = imgs[0].getHeight();
+    public static int BOX_HEAD_HEIGHT = imgs[1].getHeight();
+    public static int BOX_HEAD_WIDTH = imgs[1].getWidth();
+    
     Rectangle itemRect;
     int x, y;
     boolean visible;
@@ -54,7 +56,6 @@ public class Item {
         return visible;
     }
 
-
     public Item() {
         this.speed = Constant.GAME_SPEED;
         this.width = ITEM_WIDTH;
@@ -71,13 +72,22 @@ public class Item {
         }
     }
     
-    public void draw(Graphics g, Bird bird) {
-//      g.setColor(Color.black);
-//      g.drawRect((int) pipeRect.getX(), (int) pipeRect.getY(), (int) pipeRect.getWidth(), (int) pipeRect.getHeight());
+    public void draw(Graphics g, Bird bird) throws IOException {
+        drawItem(g);
         if (bird.getBirdCollisionRect().y == width) {
             openBox(bird);
         }
+        if(bird.isDead()) {
+            return;
+        }
         movement();
+    }
+    
+    public void drawItem(Graphics g) {
+        int count = (height - BOX_HEAD_HEIGHT) / ITEM_HEIGHT + 1;
+        for (int i = 0; i < count; i++) {
+            g.drawImage(imgs[0], x, y + i * ITEM_HEIGHT, null);
+        }
     }
 
     public boolean isInFrame() {

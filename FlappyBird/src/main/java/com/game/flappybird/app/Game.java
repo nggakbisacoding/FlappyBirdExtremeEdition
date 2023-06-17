@@ -104,7 +104,6 @@ public class Game extends Frame {
             setGameState(GAME_START);
             gameElement.reset();
             bird.resetNotDead();
-            System.out.println(ItemPool.FULL_ITEM+" "+Constant.FRAME_WIDTH+" "+GameElementLayer.HORIZONTAL_INTERVAL+" "+Item.BOX_HEAD_WIDTH);
         }
 
         private void resetGame() throws IOException {
