@@ -73,7 +73,7 @@ public class GameElementLayer {
             final int SCORE_DISTANCE = Pipe.PIPE_WIDTH * 2 + HORIZONTAL_INTERVAL; 
             if (lastPipe.isInFrame()) {
                 if (pipes.size() >= PipePool.FULL_PIPE - 2
-                        && currentDistance <= SCORE_DISTANCE + Pipe.PIPE_WIDTH * 3 / 2) {
+                        && currentDistance >= SCORE_DISTANCE + Pipe.PIPE_WIDTH * 3 / 2) {
                     ScoreCounter.getInstance().score(bird);
                 }
                 try {
@@ -90,7 +90,6 @@ public class GameElementLayer {
                             addHoverPipe(lastPipe);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         }
@@ -112,7 +111,6 @@ public class GameElementLayer {
             
                     items.add(pos);
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
             } else {
                 int x = (Constant.FRAME_WIDTH * 3) / 2;
@@ -124,7 +122,6 @@ public class GameElementLayer {
                     
                     items.add(c);
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         } else {
@@ -147,7 +144,6 @@ public class GameElementLayer {
                     }
                 }
                 catch (Exception e) {
-                    e.printStackTrace();
                 }
             }     
         }

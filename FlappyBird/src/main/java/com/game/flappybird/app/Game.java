@@ -2,12 +2,10 @@ package com.game.flappybird.app;
 
 import com.game.flappybird.component.GameElementLayer;
 import com.game.flappybird.component.Bird;
+import com.game.flappybird.component.Difficulty;
 import com.game.flappybird.component.GameBackground;
 import com.game.flappybird.component.GameForeground;
-import com.game.flappybird.component.Item;
-import com.game.flappybird.component.ItemPool;
 import com.game.flappybird.component.WelcomeAnimation;
-import com.game.flappybird.util.Constant;
 
 import static com.game.flappybird.util.Constant.FRAME_HEIGHT;
 import static com.game.flappybird.util.Constant.FRAME_WIDTH;
@@ -33,6 +31,7 @@ public class Game extends Frame {
     public static final int GAME_START = 1;
     public static final int STATE_OVER = 2;
 
+    private Difficulty difficulty;
     private GameBackground background;
     private GameForeground foreground;
     private Bird bird;
@@ -127,12 +126,18 @@ public class Game extends Frame {
     }
 
     private void initGame() {
+        difficulty = new Difficulty();
         background = new GameBackground();
         gameElement = new GameElementLayer();
         foreground = new GameForeground();
         welcomeAnimation = new WelcomeAnimation();
         bird = new Bird();
         setGameState(GAME_READY);
+        try {
+            Difficulty.reference(difficulty);
+        } catch (Exception ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         new Thread(() ->{
             while (true) {
@@ -140,7 +145,6 @@ public class Game extends Frame {
                 try {
                     Thread.sleep(FPS);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             }
         }).start();

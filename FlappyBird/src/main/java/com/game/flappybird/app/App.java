@@ -5,7 +5,6 @@
 package com.game.flappybird.app;
 
 import com.game.flappybird.util.Constant;
-import java.awt.HeadlessException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,7 +22,6 @@ public class App extends JPanel{
             frame.pack();
             frame.setVisible(true);
         } catch (Exception e) {
-            
         }
     }
 }

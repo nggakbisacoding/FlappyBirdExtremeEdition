@@ -10,7 +10,6 @@ import java.io.IOException;
 
 public class Item {
     static BufferedImage[] imgs;
-    private static BufferedImage[] img;
     public static int ITM_WIDTH;
     public static int ITM_HEIGHT;
     public static int HEAD_WIDTH;
