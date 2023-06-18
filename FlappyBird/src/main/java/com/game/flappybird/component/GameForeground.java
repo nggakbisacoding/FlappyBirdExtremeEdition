@@ -46,7 +46,6 @@ public class GameForeground {
                         clouds.add(cloud);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
             for (int i = 0; i < clouds.size(); i++) {

@@ -2,6 +2,7 @@ package com.game.flappybird.app;
 
 import com.game.flappybird.component.GameElementLayer;
 import com.game.flappybird.component.Bird;
+import com.game.flappybird.component.Difficulty;
 import com.game.flappybird.component.GameBackground;
 import com.game.flappybird.component.GameForeground;
 import com.game.flappybird.component.WelcomeAnimation;
@@ -30,6 +31,7 @@ public class Game extends Frame {
     public static final int GAME_START = 1;
     public static final int STATE_OVER = 2;
 
+    private Difficulty difficulty;
     private GameBackground background;
     private GameForeground foreground;
     private Bird bird;
@@ -85,7 +87,7 @@ public class Game extends Frame {
                 case STATE_OVER -> {
                     if (keycode == KeyEvent.VK_SPACE) {
                         try {
-                            if(bird.getHealth() >= 0)
+                            if(bird.getHealth() > 0)
                                 resetNotDead();
                             else
                                 resetGame();
@@ -98,7 +100,7 @@ public class Game extends Frame {
         }
         
         private void resetNotDead() throws IOException {
-            setGameState(GAME_READY);
+            setGameState(GAME_START);
             gameElement.reset();
             bird.resetNotDead();
         }
@@ -124,12 +126,18 @@ public class Game extends Frame {
     }
 
     private void initGame() {
+        difficulty = new Difficulty();
         background = new GameBackground();
         gameElement = new GameElementLayer();
         foreground = new GameForeground();
         welcomeAnimation = new WelcomeAnimation();
         bird = new Bird();
         setGameState(GAME_READY);
+        try {
+            Difficulty.reference(difficulty);
+        } catch (Exception ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         new Thread(() ->{
             while (true) {
@@ -137,7 +145,6 @@ public class Game extends Frame {
                 try {
                     Thread.sleep(FPS);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             }
         }).start();
@@ -164,7 +171,7 @@ public class Game extends Frame {
         } else {
             try {
                 gameElement.draw(bufG, bird);
-            } catch (LineUnavailableException | IOException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -173,11 +180,10 @@ public class Game extends Frame {
         } catch (LineUnavailableException | IOException ex) {
             Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
         }
-        g.drawImage(bufImg, 0, 0, null);
+        g.drawImage(bufImg, 0, 0, this);
     }
 
     public static void setGameState(int gameState) {
         Game.gameState = gameState;
     }
-
 }

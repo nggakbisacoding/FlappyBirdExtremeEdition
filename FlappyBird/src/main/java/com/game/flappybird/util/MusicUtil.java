@@ -24,6 +24,7 @@ public class MusicUtil {
     private static final String crash = "crash.wav";
     private static final String score = "score.wav";
     private static final String bestScore = "bestscore.wav";
+    private static final String terompet = "fail.wav";
     
     public static void play(String path) throws LineUnavailableException {
         Clip clip = AudioSystem.getClip();
@@ -57,5 +58,9 @@ public class MusicUtil {
     
     public static void playBestScore() throws LineUnavailableException {
         play(bestScore);
+    }
+    
+    public static void playFail() throws LineUnavailableException {
+        play(terompet);
     }
 }
