@@ -2,7 +2,6 @@ package com.game.flappybird.component;
 
 import java.awt.Graphics;
 
-import com.game.flappybird.util.Constant;
 import com.game.flappybird.util.GameUtil;
 import java.io.IOException;
 import java.util.logging.Level;

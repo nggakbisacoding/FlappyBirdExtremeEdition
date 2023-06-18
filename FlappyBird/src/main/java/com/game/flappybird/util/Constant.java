@@ -10,13 +10,13 @@ import java.awt.Font;
  */
 
 public class Constant {
-	public static final int FRAME_WIDTH = 420;
-	public static final int FRAME_HEIGHT = 640;
+	public static final int FRAME_WIDTH = 600;
+	public static final int FRAME_HEIGHT = 720;
 
 	public static final String GAME_TITLE = "Flappy Bird Extreme Edition";
 
 	public static final int FRAME_X = 500;
-	public static final int FRAME_Y = 100;
+	public static final int FRAME_Y = 0;
 
 	public static final String BG_IMG_PATH = "resources/img/background.png";
 
@@ -46,6 +46,8 @@ public class Constant {
         public static final String[] BOX_IMG_PATH = { "resources/img/box0.png", "resources/img/box1.png"};
 
 	public static final String[] SCORE_FILE_PATH = {"resources/score", "resources/easyscore"};
+        
+        public static final String[] SCORE_BUFF = {"resources/img/speed_up.png", "resources/img/speed_down.png"};
 
 	public static int GAME_SPEED = 11;
 

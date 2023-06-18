@@ -9,10 +9,13 @@ import com.game.flappybird.app.Game;
 import com.game.flappybird.util.Constant;
 import com.game.flappybird.util.GameUtil;
 import com.game.flappybird.util.MusicUtil;
+import java.awt.Image;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.sampled.LineUnavailableException;
 
-public class Bird {
+public class Bird implements Element{
     public static final int IMG_COUNT = 8;
     public static final int STATE_COUNT = 4;
     private final BufferedImage[][] birdImages;
@@ -23,6 +26,7 @@ public class Bird {
 
     private BufferedImage image;
     private BufferedImage heartImage;
+    private BufferedImage[] scoreBuff;
 
     private int state;
     public static final int BIRD_NORMAL = 0;
@@ -39,6 +43,7 @@ public class Bird {
 
     public static int BIRD_WIDTH;
     public static int BIRD_HEIGHT;
+    private int con;
 
     public Bird() {
         counter = ScoreCounter.getInstance();
@@ -51,6 +56,10 @@ public class Bird {
             }
         }
         
+        scoreBuff = new BufferedImage[2];
+        for (String data : Constant.SCORE_BUFF) {
+            scoreBuff[con] = GameUtil.loadBufferedImage(data);
+        }
         heartImage = GameUtil.loadBufferedImage(Constant.HEART_PATH);
 
         assert birdImages[0][0] != null;
@@ -67,6 +76,7 @@ public class Bird {
                 BIRD_WIDTH - RECT_DESCALE * 4);
     }
 
+    @Override
     public void draw(Graphics g) throws LineUnavailableException, IOException {
         movement();
         int state_index = Math.min(state, BIRD_DEAD_FALL);
@@ -85,6 +95,17 @@ public class Bird {
         }
 //      g.setColor(Color.black);
 //      g.drawRect((int) birdRect.getX(), (int) birdRect.getY(), (int) birdRect.getWidth(), (int) birdRect.getHeight());
+    }
+    
+    @Override
+    public void draw(Graphics g, Bird bird) {
+        try {
+            if(isDead()) {
+                return;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Bird.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static final int ACC_FLAP = 14; // players speed on flapping
@@ -179,48 +200,52 @@ public class Bird {
     }
     
     public void birdBoost(Graphics g, Item item) throws IOException, Exception {
+        g.setFont(Constant.CURRENT_SCORE_FONT);
+        g.setColor(Color.white);
         int states = GenerateItem.state;
         GenerateItem.setRandomItem();
         GenerateItem gI = new GenerateItem();
-        g.setFont(Constant.CURRENT_SCORE_FONT);
-        g.setColor(Color.white);
         int dura = item.getDura();
         int counters = dura;
         item.openBox(g ,this);
-        if(GameUtil.isInProbability(1, 1000)) {
+        if(GameUtil.isInProbability(1, 100)) {
             for(int i=0;i<=dura;i++) {
-                g.drawString("You die!", this.getBirdX(), Constant.FRAME_HEIGHT/3);
+                drawString(g, "You Die!.");
             }
             die();
-        } else if(GameUtil.isInProbability(1, 500) && gI.isBoosted()) {
-            if(Difficulty.getDifficulty() != "Easy") {
+        } else if(GameUtil.isInProbability(1, 75) && gI.isBoosted()) {
+            if(!"Easy".equals(Difficulty.getDifficulty())) {
                 Constant.GAME_SPEED++;
+                BufferedImage path = state == 0 ? scoreBuff[1] : scoreBuff[0];
                 for(int i=0;i<=dura;i++) {
-                    g.drawString(String.valueOf(counters), this.getBirdX(), Constant.FRAME_HEIGHT/10);
+                    drawString(g, String.valueOf(counters));
+                    drawImage(g, path);
                     counters--;
                     if(i==dura)
                         Constant.GAME_SPEED--;
                 }
-            } else {
-                return;
             }
-        } else if(GameUtil.isInProbability(1, 200) && gI.isScored()) {
-            if(GameUtil.isInProbability(1, 2))
-                counter.setScore(this, states);
-            else
-                counter.setScore(this, states);
+        } else if(GameUtil.isInProbability(1, 50) && gI.isScored()) {
+            counter.setScore(this, states);
             String text = state == 2 ? "Score Down" : "Score Up";
-            g.drawString(text, this.getBirdX(), Constant.FRAME_HEIGHT/10);
+            drawString(g, text);
         } else {
-            drawNothing(g);
+            drawString(g, "Zonk!");
         }
     }
     
-    private void drawNothing(Graphics g) {
-        g.setColor(Color.white);
-        g.setFont(Constant.CURRENT_SCORE_FONT);
-        int up = y+30;
-        g.drawString("Nothing", getBirdX(), up);
+    private void drawImage(Graphics g,Image path) {
+        int atas = 60;
+        if(heart != 0) {
+            atas = 100;
+        }
+        g.drawImage(path, Constant.FRAME_HEIGHT/15, atas, null);
+    }
+    
+    private void drawString(Graphics g, String text) {
+        int atas = this.getBirdX();
+        int kanan  = Constant.FRAME_HEIGHT/10;
+        g.drawString(text, atas+20, kanan);
     }
     
     private void drawHeart(Graphics g) {
@@ -282,4 +307,5 @@ public class Bird {
     public Rectangle getBirdCollisionRect() {
         return birdCollisionRect;
     }
+
 }

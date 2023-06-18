@@ -110,8 +110,8 @@ public class Pipe {
         for (int i = 0; i < count; i++) {
             g.drawImage(imgs[0], x, y + i * PIPE_HEIGHT + PIPE_HEAD_HEIGHT, null);
         }
-        int y = this.y + height - PIPE_HEAD_HEIGHT;
-        g.drawImage(imgs[1], x - ((PIPE_HEAD_WIDTH - width) >> 1), y, null);
+        int kanan = this.y + height - PIPE_HEAD_HEIGHT;
+        g.drawImage(imgs[1], x - ((PIPE_HEAD_WIDTH - width) >> 1), kanan, null);
     }
 
     private void movement() {

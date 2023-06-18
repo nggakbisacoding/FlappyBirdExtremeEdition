@@ -1,7 +1,6 @@
 package com.game.flappybird.component;
 
 import com.game.flappybird.util.GameUtil;
-import java.util.List;
 
 public class GenerateItem{
     public static int state;

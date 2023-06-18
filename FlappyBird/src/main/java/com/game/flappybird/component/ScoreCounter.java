@@ -32,7 +32,6 @@ public class ScoreCounter {
 	try {
             loadBestScore();
 	} catch (Exception e) {
-            e.printStackTrace();
 	}
     }
 
@@ -55,7 +54,7 @@ public class ScoreCounter {
     public void saveScore() {
         File file;
         try {
-            if(Difficulty.getDifficulty() != "ASIAN MODE") {
+            if(!"ASIAN MODE".equals(Difficulty.getDifficulty())) {
                 file = new File(Constant.SCORE_FILE_PATH[1]);
             }  else {
                 file = new File(Constant.SCORE_FILE_PATH[0]);
@@ -67,42 +66,39 @@ public class ScoreCounter {
                 
             }
         } catch (IOException e) {
-            e.printStackTrace();
 	}
     }
 
-	public void score(Bird bird) throws LineUnavailableException, IOException {
-		if (!bird.isDead()) {
-			score += 1;
-                        if (score > getBestScore())
-                            MusicUtil.playBestScore();
-                        if(score < getBestScore())
-                            MusicUtil.playScore();
-		}
+    public void score(Bird bird) throws LineUnavailableException, IOException {
+        if (!bird.isDead()) {
+            score += 1;
+                if (score > getBestScore())
+                    MusicUtil.playBestScore();
+                if(score < getBestScore())
+                    MusicUtil.playScore();
 	}
+    }
         
-        public void setScore(Bird bird, int state) throws IOException {
-            if(bird.isDead()) {
-                return;
-            }
-            if(state != 3) {
-                score -= GameUtil.getRandomNumber(1, 20);
-            } else {
-                score += GameUtil.getRandomNumber(1, 20);
-            }
-            
+    public void setScore(Bird bird, int state) throws IOException {
+        if(bird.isDead()) {
+            return;
         }
+        if(state != 3) {
+            score -= GameUtil.getRandomNumber(1, 20);
+        } else {
+            score += GameUtil.getRandomNumber(1, 20);
+        }
+    }
 
-	public long getBestScore() {
-		return bestScore;
-	}
+    public long getBestScore() {
+	return bestScore;
+    }
 
-	public long getCurrentScore() {
-		return score;
-	}
+    public long getCurrentScore() {
+	return score;
+    }
 
-	public void reset() throws FileNotFoundException, IOException {
-		score = 0;
-	}
-
+    public void reset() throws FileNotFoundException, IOException {
+        score = 0;
+    }
 }
