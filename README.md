@@ -8,7 +8,7 @@ Game classic bernama Flappy Bird dengan modifikasi seperti game RPG dengan konse
 * [Setup](#setup)
 
 ## General info
-Project Game java yang memodifikasi hampir 75% dari komponen asli dengan menganalisis dan menambahkan fitur sesuai dengan keinginan saya sendiri.
+Project Game java yang dibuat dengan cinta dan kasih sayang :).
 	
 ## Technologies
 Project is created with:
