@@ -12,7 +12,7 @@ on:
   push:
     branches: [ "Unstable" ]
   pull_request:
-    branches: [ "Unstable" ]
+    branches: [ "Stable" ]
 
 jobs:
   build:
