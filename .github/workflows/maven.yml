@@ -10,7 +10,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "Unstable" ]
+    branches: [ "Stable" ]
   pull_request:
     branches: [ "Unstable" ]
 
