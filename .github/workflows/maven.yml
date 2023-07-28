@@ -30,8 +30,9 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
           server-id: github
+          settings-path: ${{ github.workspace }}
       - name: Run the Maven verify phase
-        run: mvn -f  FlappyBird/pom.xml package -Dmaven.test.skip=true -U -e -X -B --batch-mode --update-snapshots verify
+        run: mvn -f FlappyBird/pom.xml package -D maven.test.skip=true -U -e -X -B --batch-mode --update-snapshots verify
       - name: Publish to GitHub Packages Apache Maven
         run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
         env:
